@@ -30,15 +30,6 @@ public class TrekBookingService {
     }
 
 
-    public Trail getTrailById(String trailId) {
-        for( Trail trail : trailRepository.findAll()){
-            if(trail.getId().equals(trailId))
-                return trail;
-        }
-        return null;
-    }
-
-
     public Booking makeBooking(BookingDTO bookingDTO) throws TrailNotFoundException, BookingIdNotFoundException {
         Optional<Trail> trail = trailRepository.findById(bookingDTO.getTrailId());
 
@@ -56,33 +47,12 @@ public class TrekBookingService {
     }
 
 
-    public Booking getBookingByCustomerName(BookingDTO bookingDTO) throws TrailNotFoundException, BookingIdNotFoundException {
-        Optional<Trail> trail = trailRepository.findById(bookingDTO.getTrailId());
+    public List<Booking> getAllBookingByCustomerName(String customerName) {
+
+        return bookingRepository.getAllBookingByCustomerName(customerName);
 
 
-        if(trail.isEmpty()) throw new TrailNotFoundException("Trail Not Found");
-        Trail trail1 = trail.get();
-
-        for(Booking booking : bookingRepository.findAll()){
-            if(bookingDTO.getCustomerName().equals(booking.getCustomerName()))
-                return booking;
-        }
-        return null;
     }
-
-
-
-    public List<Booking> getAllBookings(BookingDTO bookingDTO){
-        Trail trail = getTrailById(bookingDTO.getTrailId());
-
-        if(trail == null){
-            return null;
-        }
-        return bookingRepository.findAll();
-    }
-
-
-
 
 }
 

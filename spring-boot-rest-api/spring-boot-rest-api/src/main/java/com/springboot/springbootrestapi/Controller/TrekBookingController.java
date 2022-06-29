@@ -43,10 +43,10 @@ public class TrekBookingController {
 
 
 
-    @GetMapping("/makebooking/byCustomerName/{customerName}")
-    public ResponseEntity<Booking> getBookingByCustomerName(@PathVariable(value = "customerName") BookingDTO customerName)
-            throws TrailNotFoundException, BookingIdNotFoundException {
-        return new ResponseEntity<>(trekBookingService.getBookingByCustomerName(customerName), HttpStatus.OK);
+    @GetMapping("/{customerName}")
+    public List<Booking> getAllBookingByCustomerName(@PathVariable("customerName") String customerName) {
+        return trekBookingService.getAllBookingByCustomerName(customerName);
+
     }
 
 
