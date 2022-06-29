@@ -53,16 +53,6 @@ public class TrekBookingController {
 }
 
 
-   /* public ResponseEntity<Void> makeBookingForTrail(@PathVariable String trailId,
-                                                    @RequestBody Booking booking) throws TrailNotFoundException {
-
-        Booking booking1 = trekBookingService.makeBooking();
-
-        if(booking1 == null)
-            return ResponseEntity.noContent().build();
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(booking.getId()).toUri();
-        return ResponseEntity.created(location).build();
-    } */
 
 
 

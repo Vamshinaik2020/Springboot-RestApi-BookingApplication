@@ -56,49 +56,6 @@ public class TrekBookingService {
 
 }
 
-/* public List<Trail> getAllTrails() {
-        return trailRepository.findAll();
-    }
-
-
-    public Booking makeBooking(String trailId, Booking booking) throws TrailNotFoundException {
-        Optional<Trail> trail = trailRepository.findById(trailId);
-
-        if (trail.isEmpty()) throw new TrailNotFoundException(trail, trailId);
-        else return booking;
-    }
-
-
-    public Booking getBookingById(String bookingId, String id) throws BookingIdNotFoundException {
-        return bookingRepository.findById(bookingId).orElseThrow(() -> new BookingIdNotFoundException(bookingId));
-    }   */
-
-
-
-
-    //public Booking makeBooking(BookingDTO bookingDTO) throws TrailNotFoundException {
-    //Optional<Trail> trail = trailRepository.findById(bookingDTO.getTrailId());
-
-    //Trail trailWeWereLookingFor = trail.get();
-
-    //Booking booking = new Booking();
-
-    //return booking;
-    // }
-
-
-    //public Booking makeBooking(String trailId, Booking booking) {
-    //}
-
-
-    //public Booking createBooking(Booking booking) {
-     //   Optional<Trail> trail = trailRepository.findById(booking.getTrailId());
-       // Booking newbooking = new Booking();
-        //BeanUtils.copyProperties(booking, newbooking);
-        //newbooking.setTrail(trail.get());
-        //return bookingRepository.save(newbooking);
-
-
 
 
 
