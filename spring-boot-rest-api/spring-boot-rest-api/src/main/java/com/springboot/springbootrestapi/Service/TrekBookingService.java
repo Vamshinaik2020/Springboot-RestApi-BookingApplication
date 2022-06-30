@@ -3,7 +3,7 @@ package com.springboot.springbootrestapi.Service;
 import com.springboot.springbootrestapi.DTO.BookingDTO;
 import com.springboot.springbootrestapi.Repository.BookingRepository;
 import com.springboot.springbootrestapi.Repository.TrailRepository;
-import com.springboot.springbootrestapi.exception.BookingIdNotFoundException;
+import com.springboot.springbootrestapi.exception.CustomerAgeNotValid;
 import com.springboot.springbootrestapi.exception.TrailNotFoundException;
 import com.springboot.springbootrestapi.model.Booking;
 import com.springboot.springbootrestapi.model.Trail;
@@ -30,7 +30,7 @@ public class TrekBookingService {
     }
 
 
-    public Booking makeBooking(BookingDTO bookingDTO) throws TrailNotFoundException, BookingIdNotFoundException {
+    public Booking makeBooking(BookingDTO bookingDTO) throws TrailNotFoundException, CustomerAgeNotValid {
         Optional<Trail> trail = trailRepository.findById(bookingDTO.getTrailId());
 
         if (trail.isEmpty()) throw new TrailNotFoundException("Trail Not Found");
@@ -42,7 +42,7 @@ public class TrekBookingService {
 
             return bookingRepository.save(booking);
         }
-        else throw new BookingIdNotFoundException("Customer Age Not Valid");
+        else throw new CustomerAgeNotValid("Customer Age Not valid");
 
     }
 

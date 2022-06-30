@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Data
-@AllArgsConstructor
 @Document(collection="Trails")
 
 public class Trail {
@@ -24,4 +23,12 @@ public class Trail {
     private int maximumAge;
     private long unitPrice;
 
+ public Trail(String title, long startAt, long endAt, int minimumAge, int maximumAge, long unitPrice) {
+  this.title = title;
+  this.startAt = startAt;
+  this.endAt = endAt;
+  this.minimumAge = minimumAge;
+  this.maximumAge = maximumAge;
+  this.unitPrice = unitPrice;
+ }
 }
