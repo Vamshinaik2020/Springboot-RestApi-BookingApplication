@@ -52,14 +52,11 @@ public class TrekBookingService {
 
     public Booking makeBooking(BookingDTO bookingDTO) throws TrailNotFoundException, CustomerAgeNotValid {
         Optional<Trail> trail = trailRepository.findById(bookingDTO.getTrailId());
-
         if (trail.isEmpty()) throw new TrailNotFoundException("Trail Not Found");
-
         Trail trail1 = trail.get();
 
         if (bookingDTO.getCustomerAge() >= trail1.getMinimumAge() && bookingDTO.getCustomerAge() <= trail1.getMaximumAge()) {
             Booking booking = new Booking(bookingDTO.getCustomerName(), bookingDTO.getCustomerAge(), bookingDTO.getGender(), bookingDTO.getTrailId());
-
             return bookingRepository.save(booking);
         }
         else throw new CustomerAgeNotValid("Customer Age Not valid");
