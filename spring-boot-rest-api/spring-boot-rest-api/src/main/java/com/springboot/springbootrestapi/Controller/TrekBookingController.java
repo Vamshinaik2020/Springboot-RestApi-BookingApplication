@@ -46,8 +46,8 @@ public class TrekBookingController {
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{customerName}")
-    public List<Booking> getAllBookingByCustomerName(@PathVariable("customerName") String customerName) {
+    @GetMapping("/booking")
+    public List<Booking> getAllBookingByCustomerName(@RequestParam String customerName) {
         return trekBookingService.getAllBookingByCustomerName(customerName);
     }
 
@@ -57,7 +57,7 @@ public class TrekBookingController {
     }
 
     @PutMapping("booking/{bookingId}")
-    public Booking updateBookingById(@RequestBody Booking booking, @PathVariable("bookingId") String bookingId) throws BookingNotFoundException {
+    public Booking updateBookingById(@RequestBody Booking booking, @PathVariable("bookingId") String bookingId) throws BookingNotFoundException, CustomerAgeNotValid {
         return trekBookingService.updateBookingById(booking, bookingId);
     }
 

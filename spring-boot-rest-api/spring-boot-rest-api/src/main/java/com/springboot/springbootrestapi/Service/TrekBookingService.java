@@ -74,17 +74,20 @@ public class TrekBookingService {
         bookingRepository.deleteById(bookingId);
     }
 
-    public Booking updateBookingById(Booking booking, String bookingId) throws BookingNotFoundException {
+    public Booking updateBookingById(Booking booking, String bookingId) throws BookingNotFoundException, CustomerAgeNotValid {
         Optional<Booking> updatedBooking = bookingRepository.findById(bookingId);
-        if(updatedBooking.isEmpty()) {
-            throw new BookingNotFoundException("Booking with Id Not Found");
-        }
-        Booking booking1 = updatedBooking.get();
-        booking1.setCustomerName(booking.getCustomerName());
-        booking1.setCustomerAge(booking.getCustomerAge());
-        booking1.setGender(booking.getGender());
-        booking1.setTrailId(booking.getTrailId());
-        return bookingRepository.save(booking1);
+        if (updatedBooking.isEmpty()) throw new BookingNotFoundException("Booking with Id Not Found");
+
+        Optional<Trail> trail = trailRepository.findById(booking.getTrailId());
+        Trail trail1 = trail.get();
+        if (booking.getCustomerAge() <= trail1.getMaximumAge() && booking.getCustomerAge() >= trail1.getMinimumAge()) {
+            Booking booking1 = updatedBooking.get();
+            booking1.setCustomerName(booking.getCustomerName());
+            booking1.setCustomerAge(booking.getCustomerAge());
+            booking1.setGender(booking.getGender());
+            booking1.setTrailId(booking.getTrailId());
+            return bookingRepository.save(booking1);
+        } else throw new CustomerAgeNotValid("Not valid");
     }
 
 }
