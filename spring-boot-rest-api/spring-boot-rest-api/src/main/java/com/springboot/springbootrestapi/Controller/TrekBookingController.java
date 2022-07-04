@@ -1,6 +1,7 @@
 package com.springboot.springbootrestapi.Controller;
 
 import com.springboot.springbootrestapi.DTO.BookingDTO;
+import com.springboot.springbootrestapi.DTO.TrailDTO;
 import com.springboot.springbootrestapi.Service.TrekBookingService;
 import com.springboot.springbootrestapi.exception.BookingNotFoundException;
 import com.springboot.springbootrestapi.exception.CustomerAgeNotValid;
@@ -24,20 +25,25 @@ public class TrekBookingController {
         return trekBookingService.getAllTrails();
     }
 
+    @GetMapping("/trails/{trailId}")
+    public Optional<Trail> getTrailById(@PathVariable String trailId, @RequestBody TrailDTO trailDTO) {
+        return trekBookingService.getTrailById(trailDTO, trailId);
+    }
+
     @PostMapping("/trails")
-    public ResponseEntity<Trail> addNewTrail(@RequestBody Trail trail) {
-        Trail newTrail = trekBookingService.addNewTrail(trail);
+    public ResponseEntity<Trail> addNewTrail(@RequestBody TrailDTO trailDTO) {
+        Trail trail = trekBookingService.addNewTrail(trailDTO);
         return new ResponseEntity<>(trail, HttpStatus.CREATED);
     }
 
     @PutMapping("trails/{trailId}")
-    public ResponseEntity<Trail> updateTrailById(@PathVariable("trailId") String trailId, @RequestBody Trail trail) throws TrailNotFoundException {
-        return new ResponseEntity<>(trekBookingService.updateTrailById(trail, trailId), HttpStatus.CREATED);
+    public ResponseEntity<Trail> updateTrailById(@PathVariable("trailId") String trailId, @RequestBody TrailDTO trailDTO) throws TrailNotFoundException {
+        return new ResponseEntity<>(trekBookingService.updateTrailById(trailDTO, trailId), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/trails/{trailId}")
-    public void deleteTrailById(@PathVariable String trailId) {
-        trekBookingService.deleteTrailById(trailId);
+    public void deleteTrailById(@PathVariable String trailId, @RequestBody TrailDTO trailDTO) {
+        trekBookingService.deleteTrailById(trailDTO,trailId);
     }
 
     @PostMapping("/makebooking")
@@ -47,23 +53,23 @@ public class TrekBookingController {
     }
 
     @GetMapping("/booking")
-    public List<Booking> getAllBookingByCustomerName(@RequestParam String customerName) {
-        return trekBookingService.getAllBookingByCustomerName(customerName);
+    public List<Booking> getAllBookingByCustomerName(@RequestParam String customerName, @RequestBody BookingDTO bookingDTO ) {
+        return trekBookingService.getAllBookingByCustomerName(bookingDTO, customerName);
     }
 
     @GetMapping("/booking/{bookingId}")
-    public Optional<Booking> getBookingById(@PathVariable("bookingId") String bookingId) {
-        return trekBookingService.getBookingById(bookingId);
+    public Optional<Booking> getBookingById(@PathVariable("bookingId") String bookingId, @RequestBody BookingDTO bookingDTO ) {
+        return trekBookingService.getBookingById(bookingDTO, bookingId);
     }
 
     @PutMapping("booking/{bookingId}")
-    public Booking updateBookingById(@RequestBody Booking booking, @PathVariable("bookingId") String bookingId) throws BookingNotFoundException, CustomerAgeNotValid {
-        return trekBookingService.updateBookingById(booking, bookingId);
+    public Booking updateBookingById(@RequestBody BookingDTO bookingDTO, @PathVariable("bookingId") String bookingId) throws BookingNotFoundException, CustomerAgeNotValid {
+        return trekBookingService.updateBookingById(bookingDTO, bookingId);
     }
 
     @DeleteMapping("/booking/{bookingId}")
-    public void deleteBookingById(@PathVariable String bookingId) {
-        trekBookingService.deleteBookingById(bookingId);
+    public void deleteBookingById(@PathVariable String bookingId, @RequestBody BookingDTO bookingDTO ) {
+        trekBookingService.deleteBookingById(bookingDTO, bookingId);
     }
 }
 

@@ -11,12 +11,12 @@ public class Trail {
     @Id
     private String id;
     private String title;
-    private long startAt;
-    private long endAt;
+    private String startAt;
+    private String endAt;
     private int minimumAge;
     private int maximumAge;
-    private long unitPrice;
- public Trail(String title, long startAt, long endAt, int minimumAge, int maximumAge, long unitPrice) {
+    private int unitPrice;
+ public Trail(String title, String startAt, String endAt, int minimumAge, int maximumAge, int unitPrice) {
   this.title = title;
   this.startAt = startAt;
   this.endAt = endAt;
