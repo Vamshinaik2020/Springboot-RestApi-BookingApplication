@@ -41,7 +41,6 @@ public class TrekBookingService {
         Optional<Trail> trail = trailRepository.findById(trailId);
         if(trail.isEmpty()) throw new TrailNotFoundException("Trail with mentioned Id not found");
         trailRepository.deleteById(trailId);
-
     }
 
     public Trail updateTrailById(TrailDTO trailDTO, String trailId) throws TrailNotFoundException {
@@ -73,14 +72,12 @@ public class TrekBookingService {
         List<Booking> booking = bookingRepository.getAllBookingByCustomerName(customerName);
         if(booking.isEmpty()) throw new BookingNotFoundException("Booking with the customer name not found");
         return booking;
-
     }
 
     public Booking getBookingById(String bookingId) throws BookingNotFoundException {
         Optional<Booking> booking = bookingRepository.findById(bookingId);
         if (booking.isEmpty()) throw new BookingNotFoundException("Booking with mentioned Id not found");
         return booking.get();
-
     }
 
     public void deleteBookingById(String bookingId) throws BookingNotFoundException {

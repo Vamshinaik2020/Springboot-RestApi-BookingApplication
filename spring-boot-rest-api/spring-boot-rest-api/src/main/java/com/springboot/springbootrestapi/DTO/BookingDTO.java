@@ -8,7 +8,6 @@ public class BookingDTO {
     private long customerAge;
     private String gender;
     private String trailId;
-
     public BookingDTO(String customerName, long customerAge, String gender, String trailId) {
         this.customerName = customerName;
         this.customerAge = customerAge;
