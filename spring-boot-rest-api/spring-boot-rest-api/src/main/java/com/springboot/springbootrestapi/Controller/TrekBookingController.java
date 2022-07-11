@@ -52,11 +52,12 @@ public class TrekBookingController {
     }
 
     @DeleteMapping("/trails/{trailId}")
-    public ResponseEntity<Void> deleteTrailById(@PathVariable String trailId) throws TrailNotFoundException {
+    public ResponseEntity<Trail> deleteTrailById(@PathVariable String trailId) throws TrailNotFoundException {
+        Trail trail = trekBookingService.getTrailById(trailId);
         trekBookingService.deleteTrailById(trailId);
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "deleting a trail by Id");
-        return ResponseEntity.status(HttpStatus.OK).headers(header).build();
+        return ResponseEntity.status(HttpStatus.OK).headers(header).body(trail);
     }
 
     @PostMapping("/makebooking")
@@ -92,11 +93,12 @@ public class TrekBookingController {
     }
 
     @DeleteMapping("/booking/{bookingId}")
-    public ResponseEntity<Void> deleteBookingById(@PathVariable String bookingId) throws BookingNotFoundException {
+    public ResponseEntity<Booking> deleteBookingById(@PathVariable String bookingId) throws BookingNotFoundException {
+        Booking booking = trekBookingService.getBookingById(bookingId);
         trekBookingService.deleteBookingById(bookingId);
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "Deleted a booking by Id");
-        return ResponseEntity.status(HttpStatus.OK).headers(header).build();
+        return ResponseEntity.status(HttpStatus.OK).headers(header).body(booking);
     }
 
 }
