@@ -67,7 +67,6 @@ public class TrekBookingServiceTests {
         verify(mockTrailRepository).findById("abc");
     }
 
-
     @Test
     public void addNewTrailTest() {
         Trail trail = new Trail("Warangal", "12:00", "15:00", 8, 70, 5990);

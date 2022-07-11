@@ -60,7 +60,7 @@ public class TrekBookingController {
         return ResponseEntity.status(HttpStatus.OK).headers(header).body(trail);
     }
 
-    @PostMapping("/makebooking")
+    @PostMapping("/bookings")
     public ResponseEntity<Booking> makeBooking(@RequestBody BookingDTO bookingDTO) throws TrailNotFoundException, CustomerAgeNotValidException {
         Booking booking = trekBookingService.makeBooking(bookingDTO);
         HttpHeaders header = new HttpHeaders();
@@ -68,7 +68,7 @@ public class TrekBookingController {
         return ResponseEntity.status(HttpStatus.CREATED).headers(header).body(booking);
     }
 
-    @GetMapping("/booking")
+    @GetMapping("/bookings")
     public ResponseEntity<List<Booking>> getAllBookingByCustomerName(@RequestParam String customerName) throws BookingNotFoundException {
         List<Booking> booking = trekBookingService.getAllBookingByCustomerName(customerName);
         HttpHeaders header = new HttpHeaders();
@@ -76,7 +76,7 @@ public class TrekBookingController {
         return ResponseEntity.status(HttpStatus.OK).headers(header).body(booking);
     }
 
-    @GetMapping("/booking/{bookingId}")
+    @GetMapping("/bookings/{bookingId}")
     public ResponseEntity<Booking> getBookingById(@PathVariable("bookingId") String bookingId) throws BookingNotFoundException {
         Booking booking = trekBookingService.getBookingById(bookingId);
         HttpHeaders header = new HttpHeaders();
@@ -84,7 +84,7 @@ public class TrekBookingController {
         return ResponseEntity.status(HttpStatus.OK).headers(header).body(booking);
     }
 
-    @PutMapping("booking/{bookingId}")
+    @PutMapping("bookings/{bookingId}")
     public ResponseEntity<Booking> updateBookingById(@RequestBody BookingDTO bookingDTO, @PathVariable("bookingId") String bookingId) throws BookingNotFoundException, CustomerAgeNotValidException, TrailNotFoundException {
         Booking booking = trekBookingService.updateBookingById(bookingDTO, bookingId);
         HttpHeaders header = new HttpHeaders();
@@ -92,7 +92,7 @@ public class TrekBookingController {
         return ResponseEntity.status(HttpStatus.OK).headers(header).body(booking);
     }
 
-    @DeleteMapping("/booking/{bookingId}")
+    @DeleteMapping("/bookings/{bookingId}")
     public ResponseEntity<Booking> deleteBookingById(@PathVariable String bookingId) throws BookingNotFoundException {
         Booking booking = trekBookingService.getBookingById(bookingId);
         trekBookingService.deleteBookingById(bookingId);
