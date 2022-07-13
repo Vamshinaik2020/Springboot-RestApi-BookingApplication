@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -22,42 +23,42 @@ public class TrekBookingController {
 
     @GetMapping("/trails")
     public ResponseEntity<List<Trail>> getTrails() {
-        List <Trail> trail = trekBookingService.getAllTrails();
+        List<Trail> retrievedTrails = trekBookingService.getAllTrails();
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "Get all trails");
-        return ResponseEntity.status(HttpStatus.OK).headers(header).body(trail);
+        return ResponseEntity.status(HttpStatus.OK).headers(header).body(retrievedTrails);
     }
 
     @GetMapping("/trails/{trailId}")
     public ResponseEntity<Trail> getTrailById(@PathVariable String trailId) throws TrailNotFoundException {
-        Trail trail = trekBookingService.getTrailById(trailId);
+        Trail retrievedTrail = trekBookingService.getTrailById(trailId);
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "Get a trail by Id");
-        return ResponseEntity.status(HttpStatus.OK).headers(header).body(trail);
+        return ResponseEntity.status(HttpStatus.OK).headers(header).body(retrievedTrail);
     }
 
     @PostMapping("/trails")
     public ResponseEntity<Trail> addNewTrail(@RequestBody TrailDTO trailDTO) {
-        Trail trail = trekBookingService.addNewTrail(trailDTO);
+        Trail addedTrail = trekBookingService.addNewTrail(trailDTO);
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "Adding a new trail");
-        return ResponseEntity.status(HttpStatus.OK).headers(header).body(trail);
+        return ResponseEntity.status(HttpStatus.OK).headers(header).body(addedTrail);
     }
 
     @PutMapping("trails/{trailId}")
     public ResponseEntity<Trail> updateTrailById(@PathVariable("trailId") String trailId, @RequestBody TrailDTO trailDTO) throws TrailNotFoundException {
+        Trail updatedTrail = trekBookingService.updateTrailById(trailDTO, trailId);
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "Updating a trail by Id");
-        return ResponseEntity.status(HttpStatus.OK).headers(header).body(trekBookingService.updateTrailById(trailDTO,trailId));
+        return ResponseEntity.status(HttpStatus.OK).headers(header).body(updatedTrail);
     }
 
     @DeleteMapping("/trails/{trailId}")
     public ResponseEntity<Trail> deleteTrailById(@PathVariable String trailId) throws TrailNotFoundException {
-        Trail trail = trekBookingService.getTrailById(trailId);
-        trekBookingService.deleteTrailById(trailId);
+        Trail deletedTrail = trekBookingService.deleteTrailById(trailId);
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "deleting a trail by Id");
-        return ResponseEntity.status(HttpStatus.OK).headers(header).body(trail);
+        return ResponseEntity.status(HttpStatus.OK).headers(header).body(deletedTrail);
     }
 
     @PostMapping("/bookings")

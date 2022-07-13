@@ -19,6 +19,7 @@ import java.util.Optional;
 public class TrekBookingService {
     private TrailRepository trailRepository;
     private BookingRepository bookingRepository;
+
     @Autowired
     public TrekBookingService(TrailRepository mockTrailRepository, BookingRepository mockBookingRepository) {
         this.trailRepository = mockTrailRepository;
@@ -31,23 +32,23 @@ public class TrekBookingService {
 
     public Trail getTrailById(String trailId) throws TrailNotFoundException {
         Optional<Trail> trail = trailRepository.findById(trailId);
-        if(trail.isEmpty()) {
+        if (trail.isEmpty()) {
             throw new TrailNotFoundException("Trail with Id mentioned not found");
         }
         return trail.get();
     }
 
-    public Trail addNewTrail(TrailDTO trailDTO){
-        Trail trail = new Trail(trailDTO.getName(), trailDTO.getStartAt(), trailDTO.getEndAt(), trailDTO.getMinimumAge(),trailDTO.getMaximumAge(), trailDTO.getUnitPrice());
+    public Trail addNewTrail(TrailDTO trailDTO) {
+        Trail trail = new Trail(trailDTO.getName(), trailDTO.getStartAt(), trailDTO.getEndAt(), trailDTO.getMinimumAge(), trailDTO.getMaximumAge(), trailDTO.getUnitPrice());
         return trailRepository.save(trail);
     }
 
-    public void deleteTrailById(String trailId) throws TrailNotFoundException {
+    public Trail deleteTrailById(String trailId) throws TrailNotFoundException {
         Optional<Trail> trail = trailRepository.findById(trailId);
-        if(trail.isEmpty()) {
+        if (trail.isEmpty()) {
             throw new TrailNotFoundException("Trail with mentioned Id not found");
         }
-        trailRepository.deleteById(trailId);
+        return trailRepository.deleteById(trailId);
     }
 
     public Trail updateTrailById(TrailDTO trailDTO, String trailId) throws TrailNotFoundException {
@@ -82,7 +83,7 @@ public class TrekBookingService {
 
     public List<Booking> getAllBookingByCustomerName(String customerName) throws BookingNotFoundException {
         List<Booking> booking = bookingRepository.getAllBookingByCustomerName(customerName);
-        if(booking.isEmpty()) {
+        if (booking.isEmpty()) {
             throw new BookingNotFoundException("Booking with the customer name not found");
         }
         return booking;
@@ -98,7 +99,7 @@ public class TrekBookingService {
 
     public void deleteBookingById(String bookingId) throws BookingNotFoundException {
         Optional<Booking> booking = bookingRepository.findById(bookingId);
-        if(booking.isEmpty()) {
+        if (booking.isEmpty()) {
             throw new BookingNotFoundException("Booking with mentioned Id not found");
         }
         bookingRepository.deleteById(bookingId);
@@ -112,7 +113,7 @@ public class TrekBookingService {
         Booking booking1 = booking.get();
 
         Optional<Trail> trail = trailRepository.findById(bookingDTO.getTrailId());
-        if(trail.isEmpty()) {
+        if (trail.isEmpty()) {
             throw new TrailNotFoundException("Trail with mentioned Id not found");
         }
         Trail trail1 = trail.get();
