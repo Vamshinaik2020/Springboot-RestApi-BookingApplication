@@ -48,7 +48,8 @@ public class TrekBookingService {
         if (trail.isEmpty()) {
             throw new TrailNotFoundException("Trail with mentioned Id not found");
         }
-        return trailRepository.deleteById(trailId);
+        trailRepository.deleteById(trailId);
+        return trail.get();
     }
 
     public Trail updateTrailById(TrailDTO trailDTO, String trailId) throws TrailNotFoundException {
@@ -72,9 +73,9 @@ public class TrekBookingService {
         if (trail.isEmpty()) {
             throw new TrailNotFoundException("Trail Not Found");
         }
-        Trail trail1 = trail.get();
+        Trail retrievedTrail = trail.get();
 
-        if (bookingDTO.getCustomerAge() >= trail1.getMinimumAge() && bookingDTO.getCustomerAge() <= trail1.getMaximumAge()) {
+        if (ageValidation(bookingDTO.getCustomerAge(), retrievedTrail.getMaximumAge(), retrievedTrail.getMinimumAge())) {
             Booking booking = new Booking(bookingDTO.getCustomerName(), bookingDTO.getCustomerAge(), bookingDTO.getGender(), bookingDTO.getTrailId());
             return bookingRepository.save(booking);
         }
@@ -82,27 +83,28 @@ public class TrekBookingService {
     }
 
     public List<Booking> getAllBookingByCustomerName(String customerName) throws BookingNotFoundException {
-        List<Booking> booking = bookingRepository.getAllBookingByCustomerName(customerName);
-        if (booking.isEmpty()) {
+        List<Booking> retrievedBookings = bookingRepository.getAllBookingByCustomerName(customerName);
+        if (retrievedBookings.isEmpty()) {
             throw new BookingNotFoundException("Booking with the customer name not found");
         }
-        return booking;
+        return retrievedBookings;
     }
 
     public Booking getBookingById(String bookingId) throws BookingNotFoundException {
-        Optional<Booking> booking = bookingRepository.findById(bookingId);
-        if (booking.isEmpty()) {
+        Optional<Booking> retrievedBooking = bookingRepository.findById(bookingId);
+        if (retrievedBooking.isEmpty()) {
             throw new BookingNotFoundException("Booking with mentioned Id not found");
         }
-        return booking.get();
+        return retrievedBooking.get();
     }
 
-    public void deleteBookingById(String bookingId) throws BookingNotFoundException {
+    public Booking deleteBookingById(String bookingId) throws BookingNotFoundException {
         Optional<Booking> booking = bookingRepository.findById(bookingId);
         if (booking.isEmpty()) {
             throw new BookingNotFoundException("Booking with mentioned Id not found");
         }
         bookingRepository.deleteById(bookingId);
+        return booking.get();
     }
 
     public Booking updateBookingById(BookingDTO bookingDTO, String bookingId) throws BookingNotFoundException, CustomerAgeNotValidException, TrailNotFoundException {
@@ -110,22 +112,28 @@ public class TrekBookingService {
         if (booking.isEmpty()) {
             throw new BookingNotFoundException("Booking with mentioned Id not found");
         }
-        Booking booking1 = booking.get();
+        Booking retrievedBooking = booking.get();
 
         Optional<Trail> trail = trailRepository.findById(bookingDTO.getTrailId());
         if (trail.isEmpty()) {
             throw new TrailNotFoundException("Trail with mentioned Id not found");
         }
-        Trail trail1 = trail.get();
+        Trail retrievedTrail = trail.get();
 
-        if (bookingDTO.getCustomerAge() >= trail1.getMinimumAge() && bookingDTO.getCustomerAge() <= trail1.getMaximumAge()) {
-            booking1.setCustomerName(bookingDTO.getCustomerName());
-            booking1.setCustomerAge(bookingDTO.getCustomerAge());
-            booking1.setGender(bookingDTO.getGender());
-            return bookingRepository.save(booking1);
+        if (ageValidation(bookingDTO.getCustomerAge(), retrievedTrail.getMaximumAge(), retrievedTrail.getMinimumAge())) {
+            retrievedBooking.setCustomerName(bookingDTO.getCustomerName());
+            retrievedBooking.setCustomerAge(bookingDTO.getCustomerAge());
+            retrievedBooking.setGender(bookingDTO.getGender());
+            return bookingRepository.save(retrievedBooking);
         }
         throw new CustomerAgeNotValidException("Customer Age is not valid");
     }
+
+    private boolean ageValidation(long customerAge, int maximumAge, int minimumAge) {
+        return customerAge >= minimumAge && customerAge <= maximumAge;
+    }
+
+
 }
 
 
