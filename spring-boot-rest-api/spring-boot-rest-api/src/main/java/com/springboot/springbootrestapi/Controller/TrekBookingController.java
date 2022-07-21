@@ -21,6 +21,10 @@ public class TrekBookingController {
     @Autowired
     private TrekBookingService trekBookingService;
 
+    public TrekBookingController(TrekBookingService mockTrekBookingService) {
+        this.trekBookingService = mockTrekBookingService;
+    }
+
     @GetMapping("/trails")
     public ResponseEntity<List<Trail>> getTrails() {
         List<Trail> retrievedTrails = trekBookingService.getAllTrails();

@@ -20,8 +20,7 @@ public class TrekBookingService {
     private TrailRepository trailRepository;
     private BookingRepository bookingRepository;
 
-    @Autowired
-    public TrekBookingService(TrailRepository mockTrailRepository, BookingRepository mockBookingRepository) {
+    public TrekBookingService(@Autowired TrailRepository mockTrailRepository, @Autowired BookingRepository mockBookingRepository) {
         this.trailRepository = mockTrailRepository;
         this.bookingRepository = mockBookingRepository;
     }
