@@ -74,7 +74,7 @@ public class TrekBookingService {
         }
         Trail retrievedTrail = trail.get();
 
-        if (ageValidation(bookingDTO.getCustomerAge(), retrievedTrail.getMaximumAge(), retrievedTrail.getMinimumAge())) {
+        if (validation(bookingDTO, retrievedTrail)) {
             Booking booking = new Booking(bookingDTO.getCustomerName(), bookingDTO.getCustomerAge(), bookingDTO.getGender(), bookingDTO.getTrailId());
             return bookingRepository.save(booking);
         }
@@ -119,7 +119,7 @@ public class TrekBookingService {
         }
         Trail retrievedTrail = trail.get();
 
-        if (ageValidation(bookingDTO.getCustomerAge(), retrievedTrail.getMaximumAge(), retrievedTrail.getMinimumAge())) {
+        if (validation(bookingDTO, retrievedTrail)) {
             retrievedBooking.setCustomerName(bookingDTO.getCustomerName());
             retrievedBooking.setCustomerAge(bookingDTO.getCustomerAge());
             retrievedBooking.setGender(bookingDTO.getGender());
@@ -128,9 +128,10 @@ public class TrekBookingService {
         throw new CustomerAgeNotValidException("Customer Age is not valid");
     }
 
-    private boolean ageValidation(long customerAge, int maximumAge, int minimumAge) {
-        return customerAge >= minimumAge && customerAge <= maximumAge;
+    private boolean validation(BookingDTO bookingDTO, Trail trail) {
+        return bookingDTO.getCustomerAge() >= trail.getMinimumAge() && bookingDTO.getCustomerAge() <= trail.getMaximumAge();
     }
+
 
 
 }
