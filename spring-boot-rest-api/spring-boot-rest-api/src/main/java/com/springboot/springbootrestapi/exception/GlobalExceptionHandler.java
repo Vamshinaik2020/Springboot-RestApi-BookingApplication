@@ -12,9 +12,12 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +102,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = ex.getMessage();
         List<String> details = new ArrayList<>();
         details.add("Customer Age Not Valid");
+        ApiErrors errors = new ApiErrors(message, details, HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(FavouriteAlreadyPresentException.class)
+    public ResponseEntity<Object> handleCustomerAgeNotValidException(FavouriteAlreadyPresentException ex) {
+        String message = ex.getMessage();
+        List<String> details = new ArrayList<>();
+        details.add("Trail already present in the favourite list");
+        ApiErrors errors = new ApiErrors(message, details, HttpStatus.OK, LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.OK).body(errors);
+    }
+
+    @ExceptionHandler(FavouriteNotFound.class)
+    public ResponseEntity<Object> handleCustomerAgeNotValidException(FavouriteNotFound ex) {
+        String message = ex.getMessage();
+        List<String> details = new ArrayList<>();
+        details.add("Favourite not found");
         ApiErrors errors = new ApiErrors(message, details, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }

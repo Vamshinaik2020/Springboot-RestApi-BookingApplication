@@ -5,5 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TrailRepository extends MongoRepository <Trail, String>{
+public interface TrailRepository extends MongoRepository <Trail, String> {
+    Trail getTrailByName(String name);
 }

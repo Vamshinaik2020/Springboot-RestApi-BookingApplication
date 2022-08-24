@@ -1,14 +1,20 @@
 package com.springboot.springbootrestapi.DTO;
 
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
+
+import javax.validation.constraints.Min;
 
 @Data
 public class BookingDTO {
+    @NotNull
     private String customerName;
     private long customerAge;
+    @NotNull
     private String gender;
+    @NotNull
     private String trailId;
-    public BookingDTO(String customerName, long customerAge, String gender, String trailId) {
+    public BookingDTO(@NotNull String customerName, long customerAge, @NotNull String gender, @NotNull String trailId) {
         this.customerName = customerName;
         this.customerAge = customerAge;
         this.gender = gender;

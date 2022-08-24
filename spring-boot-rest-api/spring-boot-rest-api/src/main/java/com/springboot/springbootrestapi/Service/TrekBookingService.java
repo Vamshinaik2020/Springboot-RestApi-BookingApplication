@@ -1,13 +1,14 @@
 package com.springboot.springbootrestapi.Service;
 
 import com.springboot.springbootrestapi.DTO.BookingDTO;
+import com.springboot.springbootrestapi.DTO.FavouriteDTO;
 import com.springboot.springbootrestapi.DTO.TrailDTO;
 import com.springboot.springbootrestapi.Repository.BookingRepository;
+import com.springboot.springbootrestapi.Repository.FavouriteRepository;
 import com.springboot.springbootrestapi.Repository.TrailRepository;
-import com.springboot.springbootrestapi.exception.BookingNotFoundException;
-import com.springboot.springbootrestapi.exception.CustomerAgeNotValidException;
-import com.springboot.springbootrestapi.exception.TrailNotFoundException;
+import com.springboot.springbootrestapi.exception.*;
 import com.springboot.springbootrestapi.model.Booking;
+import com.springboot.springbootrestapi.model.Favourite;
 import com.springboot.springbootrestapi.model.Trail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class TrekBookingService {
     private TrailRepository trailRepository;
     private BookingRepository bookingRepository;
+    @Autowired
+    private FavouriteRepository favouriteRepository;
 
     public TrekBookingService(@Autowired TrailRepository mockTrailRepository, @Autowired BookingRepository mockBookingRepository) {
         this.trailRepository = mockTrailRepository;
@@ -40,6 +43,10 @@ public class TrekBookingService {
     public Trail addNewTrail(TrailDTO trailDTO) {
         Trail trail = new Trail(trailDTO.getName(), trailDTO.getStartAt(), trailDTO.getEndAt(), trailDTO.getMinimumAge(), trailDTO.getMaximumAge(), trailDTO.getUnitPrice());
         return trailRepository.save(trail);
+    }
+
+    public Trail getTrailByName(String name) {
+        return trailRepository.getTrailByName(name);
     }
 
     public Trail deleteTrailById(String trailId) throws TrailNotFoundException {
@@ -79,7 +86,7 @@ public class TrekBookingService {
             return bookingRepository.save(booking);
         }
         throw new CustomerAgeNotValidException("Customer Age Not valid");
-    }
+    }   
 
     public List<Booking> getAllBookingByCustomerName(String customerName) throws BookingNotFoundException {
         List<Booking> retrievedBookings = bookingRepository.getAllBookingByCustomerName(customerName);
@@ -123,6 +130,7 @@ public class TrekBookingService {
             retrievedBooking.setCustomerName(bookingDTO.getCustomerName());
             retrievedBooking.setCustomerAge(bookingDTO.getCustomerAge());
             retrievedBooking.setGender(bookingDTO.getGender());
+            retrievedBooking.setTrailId(bookingDTO.getTrailId());
             return bookingRepository.save(retrievedBooking);
         }
         throw new CustomerAgeNotValidException("Customer Age is not valid");
@@ -132,9 +140,37 @@ public class TrekBookingService {
         return bookingDTO.getCustomerAge() >= trail.getMinimumAge() && bookingDTO.getCustomerAge() <= trail.getMaximumAge();
     }
 
+    public Favourite addToFavourites(FavouriteDTO favouriteDTO) {
+        Optional<Favourite> favTrail = favouriteRepository.findByTrailId(favouriteDTO.getTrailId());
+        if(favTrail.isPresent()) {
+            throw new FavouriteAlreadyPresentException("Already added to Favourites");
+        }
+        Favourite favourite = new Favourite(favouriteDTO.getTrailId() , favouriteDTO.getCustomerName());
+        return favouriteRepository.save(favourite);
+    }
 
+    public List<Favourite> getAllFavourites() {
+        return favouriteRepository.findAll();
+    }
 
+    public Favourite getFavouriteById(String favouriteId) {
+        Optional<Favourite> favourite = favouriteRepository.findById(favouriteId);
+        if(favourite.isEmpty()) {
+            throw new FavouriteNotFound("Favourite with mentioned Id not found");
+        }
+        return favourite.get();
+    }
+
+    public Favourite removeTrailFromFavourite(String favouriteId) {
+        Optional<Favourite> deleteFavourite = favouriteRepository.findById(favouriteId);
+        if(deleteFavourite.isEmpty()) {
+            throw new FavouriteNotFound("Favourite Trail with mentioned Id not found");
+        }
+        favouriteRepository.deleteById(favouriteId);
+        return deleteFavourite.get();
+    }
 }
+
 
 
 
