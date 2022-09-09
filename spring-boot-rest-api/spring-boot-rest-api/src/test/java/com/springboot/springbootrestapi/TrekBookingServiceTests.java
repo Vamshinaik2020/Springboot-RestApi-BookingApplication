@@ -2,9 +2,9 @@ package com.springboot.springbootrestapi;
 
 import com.springboot.springbootrestapi.DTO.BookingDTO;
 import com.springboot.springbootrestapi.DTO.TrailDTO;
-import com.springboot.springbootrestapi.Repository.BookingRepository;
-import com.springboot.springbootrestapi.Repository.TrailRepository;
-import com.springboot.springbootrestapi.Service.TrekBookingService;
+import com.springboot.springbootrestapi.repository.BookingRepository;
+import com.springboot.springbootrestapi.repository.TrailRepository;
+import com.springboot.springbootrestapi.service.TrekBookingService;
 import com.springboot.springbootrestapi.exception.BookingNotFoundException;
 import com.springboot.springbootrestapi.exception.CustomerAgeNotValidException;
 import com.springboot.springbootrestapi.exception.TrailNotFoundException;
@@ -184,9 +184,9 @@ public class TrekBookingServiceTests {
         bookings.add(booking1);
         bookings.add(booking2);
 
-        when(mockBookingRepository.getAllBookingByCustomerName("Mahesh")).thenReturn((List<Booking>) bookings);
+        when(mockBookingRepository.findBookingsByCustomerName("Mahesh")).thenReturn((List<Booking>) bookings);
 
-        List<Booking> returnedBooking = trekBookingService.getAllBookingByCustomerName("Mahesh");
+        List<Booking> returnedBooking = trekBookingService.getAListOfBookingsByCustomerName("Mahesh");
 
         Assertions.assertEquals(bookings, returnedBooking);
     }
@@ -194,9 +194,9 @@ public class TrekBookingServiceTests {
     @Test
     public void shouldReturnBookingNotFound_GivenCustomerName() {
         BookingNotFoundException expectedException = new BookingNotFoundException("Booking with the customer name not found");
-        when(mockBookingRepository.getAllBookingByCustomerName("Mahesh")).thenThrow(expectedException);
+        when(mockBookingRepository.findBookingsByCustomerName("Mahesh")).thenThrow(expectedException);
 
-        Exception exception=  Assertions.assertThrows(BookingNotFoundException.class, () -> trekBookingService.getAllBookingByCustomerName("Mahesh"));
+        Exception exception=  Assertions.assertThrows(BookingNotFoundException.class, () -> trekBookingService.getAListOfBookingsByCustomerName("Mahesh"));
 
         String actualMessage = exception.getMessage();
         Assertions.assertTrue(actualMessage.contains("Booking with the customer name not found"));

@@ -14,6 +14,7 @@ public class NameValidator implements ConstraintValidator<NameValidation, String
     public boolean isValid(String name, ConstraintValidatorContext context) {  // here we use our logic
         if (!trailsList.contains(name)) {
             throw new TrailNotFoundException(context.getDefaultConstraintMessageTemplate());
+            //return false;
         }
         return true;
     }

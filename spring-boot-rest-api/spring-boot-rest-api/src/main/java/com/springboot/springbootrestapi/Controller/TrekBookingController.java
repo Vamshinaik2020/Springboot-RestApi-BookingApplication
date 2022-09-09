@@ -3,7 +3,7 @@ package com.springboot.springbootrestapi.Controller;
 import com.springboot.springbootrestapi.DTO.BookingDTO;
 import com.springboot.springbootrestapi.DTO.FavouriteDTO;
 import com.springboot.springbootrestapi.DTO.TrailDTO;
-import com.springboot.springbootrestapi.Service.TrekBookingService;
+import com.springboot.springbootrestapi.service.TrekBookingService;
 import com.springboot.springbootrestapi.exception.BookingNotFoundException;
 import com.springboot.springbootrestapi.exception.CustomerAgeNotValidException;
 import com.springboot.springbootrestapi.exception.TrailNotFoundException;
@@ -53,15 +53,15 @@ public class TrekBookingController {
         return ResponseEntity.status(HttpStatus.OK).headers(header).body(addedTrail);
     }
 
-    @GetMapping("/trails/name")
-    public ResponseEntity<Trail> getTrailByName(@PathVariable String name) {
-        Trail retrievedTrail = trekBookingService.getTrailByName(name);
+    @GetMapping("/trails/trailName")
+    public ResponseEntity<List<Trail>> getTrailByName(@RequestParam String name) {
+        List<Trail> retrievedTrail = trekBookingService.getTrailByName(name);
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "Get a trail by name");
         return ResponseEntity.status(HttpStatus.OK).headers(header).body(retrievedTrail);
     }
 
-    @PutMapping("trails/{trailId}")
+    @PutMapping("/trails/{trailId}")
     public ResponseEntity<Trail> updateTrailById(@PathVariable("trailId") String trailId, @RequestBody @Valid TrailDTO trailDTO) throws TrailNotFoundException {
         Trail updatedTrail = trekBookingService.updateTrailById(trailDTO, trailId);
         HttpHeaders header = new HttpHeaders();
@@ -87,7 +87,7 @@ public class TrekBookingController {
 
     @GetMapping("/bookings")
     public ResponseEntity<List<Booking>> getAllBookingByCustomerName(@RequestParam String customerName) throws BookingNotFoundException {
-        List<Booking> retrievedBookings = trekBookingService.getAllBookingByCustomerName(customerName);
+        List<Booking> retrievedBookings = trekBookingService.getAListOfBookingsByCustomerName(customerName);
         HttpHeaders header = new HttpHeaders();
         header.add("desc", "Get all bookings by customer name");
         return ResponseEntity.status(HttpStatus.OK).headers(header).body(retrievedBookings);

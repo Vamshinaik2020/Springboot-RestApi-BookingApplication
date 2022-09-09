@@ -1,11 +1,11 @@
-package com.springboot.springbootrestapi.Service;
+package com.springboot.springbootrestapi.service;
 
 import com.springboot.springbootrestapi.DTO.BookingDTO;
 import com.springboot.springbootrestapi.DTO.FavouriteDTO;
 import com.springboot.springbootrestapi.DTO.TrailDTO;
-import com.springboot.springbootrestapi.Repository.BookingRepository;
-import com.springboot.springbootrestapi.Repository.FavouriteRepository;
-import com.springboot.springbootrestapi.Repository.TrailRepository;
+import com.springboot.springbootrestapi.repository.BookingRepository;
+import com.springboot.springbootrestapi.repository.FavouriteRepository;
+import com.springboot.springbootrestapi.repository.TrailRepository;
 import com.springboot.springbootrestapi.exception.*;
 import com.springboot.springbootrestapi.model.Booking;
 import com.springboot.springbootrestapi.model.Favourite;
@@ -45,8 +45,12 @@ public class TrekBookingService {
         return trailRepository.save(trail);
     }
 
-    public Trail getTrailByName(String name) {
-        return trailRepository.getTrailByName(name);
+    public List<Trail> getTrailByName(String name) {
+        List<Trail> retrievedTrail = trailRepository.findTrailByName(name);
+        if(retrievedTrail.isEmpty()) {
+            throw new TrailNotFoundException("Trail with mentioned name not found");
+        }
+        return retrievedTrail;
     }
 
     public Trail deleteTrailById(String trailId) throws TrailNotFoundException {
@@ -88,8 +92,8 @@ public class TrekBookingService {
         throw new CustomerAgeNotValidException("Customer Age Not valid");
     }   
 
-    public List<Booking> getAllBookingByCustomerName(String customerName) throws BookingNotFoundException {
-        List<Booking> retrievedBookings = bookingRepository.getAllBookingByCustomerName(customerName);
+    public List<Booking> getAListOfBookingsByCustomerName(String customerName) throws BookingNotFoundException {
+        List<Booking> retrievedBookings = bookingRepository.findBookingsByCustomerName(customerName);
         if (retrievedBookings.isEmpty()) {
             throw new BookingNotFoundException("Booking with the customer name not found");
         }

@@ -1,4 +1,4 @@
-package com.springboot.springbootrestapi.Repository;
+package com.springboot.springbootrestapi.repository;
 
 import com.springboot.springbootrestapi.model.Favourite;
 import org.springframework.data.mongodb.repository.MongoRepository;
