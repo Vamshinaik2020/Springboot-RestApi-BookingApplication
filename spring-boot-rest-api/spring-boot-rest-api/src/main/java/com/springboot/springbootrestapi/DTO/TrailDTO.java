@@ -1,4 +1,5 @@
 package com.springboot.springbootrestapi.DTO;
+
 import com.springboot.springbootrestapi.validations.NameValidation;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface FavouriteRepository extends MongoRepository < Favourite,String> {
+public interface FavouriteRepository extends MongoRepository<Favourite, String> {
 
     Optional<Favourite> findByTrailId(String trailId);
 }

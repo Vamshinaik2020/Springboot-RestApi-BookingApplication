@@ -12,12 +12,9 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = ex.getMessage();
         List<String> details = new ArrayList<>();
         details.add("Request method not supported");
-        ApiErrors errors = new ApiErrors(message,details,status, LocalDateTime.now());
+        ApiErrors errors = new ApiErrors(message, details, status, LocalDateTime.now());
         return ResponseEntity.status(status).body(errors);
     }
 
@@ -57,7 +54,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = ex.getMessage();
         List<String> details = new ArrayList<>();
         details.add("Method not supported");
-        ApiErrors errors = new ApiErrors(message,details,status, LocalDateTime.now());
+        ApiErrors errors = new ApiErrors(message, details, status, LocalDateTime.now());
         return ResponseEntity.status(status).body(errors);
     }
 
@@ -66,7 +63,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = ex.getMessage();
         List<String> details = new ArrayList<>();
         details.add("PathVariable is missing");
-        ApiErrors errors = new ApiErrors(message,details,status, LocalDateTime.now());
+        ApiErrors errors = new ApiErrors(message, details, status, LocalDateTime.now());
         return ResponseEntity.status(status).body(errors);
     }
 

@@ -1,7 +1,6 @@
 package com.springboot.springbootrestapi.model;
 
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

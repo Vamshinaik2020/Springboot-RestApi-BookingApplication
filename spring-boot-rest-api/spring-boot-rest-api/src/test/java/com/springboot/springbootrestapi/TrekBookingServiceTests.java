@@ -2,14 +2,14 @@ package com.springboot.springbootrestapi;
 
 import com.springboot.springbootrestapi.DTO.BookingDTO;
 import com.springboot.springbootrestapi.DTO.TrailDTO;
-import com.springboot.springbootrestapi.repository.BookingRepository;
-import com.springboot.springbootrestapi.repository.TrailRepository;
-import com.springboot.springbootrestapi.service.TrekBookingService;
 import com.springboot.springbootrestapi.exception.BookingNotFoundException;
 import com.springboot.springbootrestapi.exception.CustomerAgeNotValidException;
 import com.springboot.springbootrestapi.exception.TrailNotFoundException;
 import com.springboot.springbootrestapi.model.Booking;
 import com.springboot.springbootrestapi.model.Trail;
+import com.springboot.springbootrestapi.repository.BookingRepository;
+import com.springboot.springbootrestapi.repository.TrailRepository;
+import com.springboot.springbootrestapi.service.TrekBookingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -155,12 +155,12 @@ public class TrekBookingServiceTests {
     }
 
     @Test
-    public void shouldReturnTrailNotFound_ToMakeABooking()  {
+    public void shouldReturnTrailNotFound_ToMakeABooking() {
         TrailNotFoundException expectedException = new TrailNotFoundException("Trail with mentioned Id not found");
         when(mockTrailRepository.findById("abc")).thenThrow(expectedException);
 
         BookingDTO returnedBookingDTO = new BookingDTO("Mahesh", 10, "Male", "abc");
-        Exception exception = Assertions.assertThrows(TrailNotFoundException.class,()-> trekBookingService.makeBooking(returnedBookingDTO));
+        Exception exception = Assertions.assertThrows(TrailNotFoundException.class, () -> trekBookingService.makeBooking(returnedBookingDTO));
 
         String actualMessage = exception.getMessage();
         Assertions.assertTrue(actualMessage.contains("Trail with mentioned Id not found"));
@@ -173,7 +173,7 @@ public class TrekBookingServiceTests {
 
         BookingDTO returnedBookingDTO = new BookingDTO("Mahesh", 5, "Male", "abc");
 
-        Exception exception = Assertions.assertThrows(CustomerAgeNotValidException.class, ()-> trekBookingService.makeBooking(returnedBookingDTO));
+        Exception exception = Assertions.assertThrows(CustomerAgeNotValidException.class, () -> trekBookingService.makeBooking(returnedBookingDTO));
     }
 
     @Test
@@ -196,7 +196,7 @@ public class TrekBookingServiceTests {
         BookingNotFoundException expectedException = new BookingNotFoundException("Booking with the customer name not found");
         when(mockBookingRepository.findBookingsByCustomerName("Mahesh")).thenThrow(expectedException);
 
-        Exception exception=  Assertions.assertThrows(BookingNotFoundException.class, () -> trekBookingService.getAListOfBookingsByCustomerName("Mahesh"));
+        Exception exception = Assertions.assertThrows(BookingNotFoundException.class, () -> trekBookingService.getAListOfBookingsByCustomerName("Mahesh"));
 
         String actualMessage = exception.getMessage();
         Assertions.assertTrue(actualMessage.contains("Booking with the customer name not found"));
@@ -218,7 +218,7 @@ public class TrekBookingServiceTests {
         BookingNotFoundException expectedException = new BookingNotFoundException("Booking with mentioned Id not found");
         when(mockBookingRepository.findById("123")).thenThrow(expectedException);
 
-        Exception exception = Assertions.assertThrows(BookingNotFoundException.class, ()-> trekBookingService.getBookingById("123"));
+        Exception exception = Assertions.assertThrows(BookingNotFoundException.class, () -> trekBookingService.getBookingById("123"));
 
         String actualMessage = exception.getMessage();
         Assertions.assertTrue(actualMessage.contains("Booking with mentioned Id not found"));
@@ -239,7 +239,7 @@ public class TrekBookingServiceTests {
         BookingNotFoundException expectedException = new BookingNotFoundException("Booking with mentioned Id not found");
         when(mockBookingRepository.findById("123")).thenThrow(expectedException);
 
-        Exception exception = Assertions.assertThrows(BookingNotFoundException.class, ()-> trekBookingService.deleteBookingById("123"));
+        Exception exception = Assertions.assertThrows(BookingNotFoundException.class, () -> trekBookingService.deleteBookingById("123"));
 
         String actualMessage = exception.getMessage();
         Assertions.assertTrue(actualMessage.contains("Booking with mentioned Id not found"));
@@ -259,6 +259,7 @@ public class TrekBookingServiceTests {
         verify(mockBookingRepository).save(booking);
         verify(mockBookingRepository).findById("123");
     }
+
     @Test
     public void shouldReturnBookingNotFound_ToUpdateABooking() {
         BookingNotFoundException expectedException = new BookingNotFoundException("Booking with mentioned Id not found");
@@ -281,8 +282,9 @@ public class TrekBookingServiceTests {
 
         BookingDTO returnedBookingDTO = new BookingDTO("Mahesh", 40, "Male", "abc");
 
-        Assertions.assertThrows(TrailNotFoundException.class, ()-> trekBookingService.updateBookingById(returnedBookingDTO, "123"));
+        Assertions.assertThrows(TrailNotFoundException.class, () -> trekBookingService.updateBookingById(returnedBookingDTO, "123"));
     }
+
     @Test
     public void shouldReturnCustomerAgeNotValid_ToUpdateBooking() {
         Booking booking = new Booking("Mahesh", 30, "Male", "abc");
@@ -292,7 +294,7 @@ public class TrekBookingServiceTests {
         when(mockTrailRepository.findById("abc")).thenReturn(Optional.of(trail));
 
         BookingDTO returnedBookingDTO = new BookingDTO("Mahesh", 5, "Male", "abc");
-        Exception exception = Assertions.assertThrows(CustomerAgeNotValidException.class, ()-> trekBookingService.updateBookingById(returnedBookingDTO, "123"));
+        Exception exception = Assertions.assertThrows(CustomerAgeNotValidException.class, () -> trekBookingService.updateBookingById(returnedBookingDTO, "123"));
 
         String actualMessage = exception.getMessage();
         Assertions.assertTrue(actualMessage.contains("Customer Age is not valid"));

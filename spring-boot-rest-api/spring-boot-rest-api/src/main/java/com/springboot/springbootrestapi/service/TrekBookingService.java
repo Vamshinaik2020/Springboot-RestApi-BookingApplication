@@ -3,13 +3,13 @@ package com.springboot.springbootrestapi.service;
 import com.springboot.springbootrestapi.DTO.BookingDTO;
 import com.springboot.springbootrestapi.DTO.FavouriteDTO;
 import com.springboot.springbootrestapi.DTO.TrailDTO;
-import com.springboot.springbootrestapi.repository.BookingRepository;
-import com.springboot.springbootrestapi.repository.FavouriteRepository;
-import com.springboot.springbootrestapi.repository.TrailRepository;
 import com.springboot.springbootrestapi.exception.*;
 import com.springboot.springbootrestapi.model.Booking;
 import com.springboot.springbootrestapi.model.Favourite;
 import com.springboot.springbootrestapi.model.Trail;
+import com.springboot.springbootrestapi.repository.BookingRepository;
+import com.springboot.springbootrestapi.repository.FavouriteRepository;
+import com.springboot.springbootrestapi.repository.TrailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,7 @@ public class TrekBookingService {
 
     public List<Trail> getTrailByName(String name) {
         List<Trail> retrievedTrail = trailRepository.findTrailByName(name);
-        if(retrievedTrail.isEmpty()) {
+        if (retrievedTrail.isEmpty()) {
             throw new TrailNotFoundException("Trail with mentioned name not found");
         }
         return retrievedTrail;
@@ -90,7 +90,7 @@ public class TrekBookingService {
             return bookingRepository.save(booking);
         }
         throw new CustomerAgeNotValidException("Customer Age Not valid");
-    }   
+    }
 
     public List<Booking> getAListOfBookingsByCustomerName(String customerName) throws BookingNotFoundException {
         List<Booking> retrievedBookings = bookingRepository.findBookingsByCustomerName(customerName);
@@ -146,10 +146,10 @@ public class TrekBookingService {
 
     public Favourite addToFavourites(FavouriteDTO favouriteDTO) {
         Optional<Favourite> favTrail = favouriteRepository.findByTrailId(favouriteDTO.getTrailId());
-        if(favTrail.isPresent()) {
+        if (favTrail.isPresent()) {
             throw new FavouriteAlreadyPresentException("Already added to Favourites");
         }
-        Favourite favourite = new Favourite(favouriteDTO.getTrailId() , favouriteDTO.getCustomerName());
+        Favourite favourite = new Favourite(favouriteDTO.getTrailId(), favouriteDTO.getCustomerName());
         return favouriteRepository.save(favourite);
     }
 
@@ -159,7 +159,7 @@ public class TrekBookingService {
 
     public Favourite getFavouriteById(String favouriteId) {
         Optional<Favourite> favourite = favouriteRepository.findById(favouriteId);
-        if(favourite.isEmpty()) {
+        if (favourite.isEmpty()) {
             throw new FavouriteNotFound("Favourite with mentioned Id not found");
         }
         return favourite.get();
@@ -167,7 +167,7 @@ public class TrekBookingService {
 
     public Favourite removeTrailFromFavourite(String favouriteId) {
         Optional<Favourite> deleteFavourite = favouriteRepository.findById(favouriteId);
-        if(deleteFavourite.isEmpty()) {
+        if (deleteFavourite.isEmpty()) {
             throw new FavouriteNotFound("Favourite Trail with mentioned Id not found");
         }
         favouriteRepository.deleteById(favouriteId);
