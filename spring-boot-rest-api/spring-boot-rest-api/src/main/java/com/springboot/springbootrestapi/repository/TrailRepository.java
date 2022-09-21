@@ -1,7 +1,6 @@
 package com.springboot.springbootrestapi.repository;
 
 import com.springboot.springbootrestapi.model.Trail;
-import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
