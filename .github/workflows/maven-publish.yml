@@ -25,5 +25,5 @@ jobs:
         aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
         aws-region: ap-south-1
 
-    - run: aws s3 cp -r ./ s3://testpracticebucketvamshi/training/
+    - run: aws s3 cp --recursive ./ s3://testpracticebucketvamshi/training/
 
